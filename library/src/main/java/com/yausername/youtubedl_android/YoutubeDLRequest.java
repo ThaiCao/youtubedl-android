@@ -15,7 +15,7 @@ public class YoutubeDLRequest {
     private final List<String> commandList = new ArrayList<>();
 
     public YoutubeDLRequest(String url) {
-        this.urls = Collections.singletonList(url);
+        this.urls = Arrays.asList(url);
     }
 
     public YoutubeDLRequest(@NonNull List<String> urls) {
@@ -55,8 +55,8 @@ public class YoutubeDLRequest {
     }
 
     public List<String> buildCommand() {
-        commandList.addAll(options.buildOptions());
         commandList.addAll(urls);
+        commandList.addAll(options.buildOptions());
         return commandList;
     }
 
