@@ -15,9 +15,10 @@ import java.net.URL
 internal object YoutubeDLUpdater {
     private const val releasesUrl = "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest"
     private const val youtubeDLVersionKey = "youtubeDLVersion"
+
     @Throws(IOException::class, YoutubeDLException::class)
-    fun update(appContext: Context): UpdateStatus {
-        val json = checkForUpdate(appContext) ?: return UpdateStatus.ALREADY_UP_TO_DATE
+    fun update(appContext: Context, apiUrl: String? = null): UpdateStatus {
+        val json = checkForUpdate(appContext, apiUrl) ?: return UpdateStatus.ALREADY_UP_TO_DATE
         val downloadUrl = getDownloadUrl(json)
         val file = download(appContext, downloadUrl)
         val ytdlpDir = getYoutubeDLDir(appContext)
@@ -44,8 +45,8 @@ internal object YoutubeDLUpdater {
     }
 
     @Throws(IOException::class)
-    private fun checkForUpdate(appContext: Context): JsonNode? {
-        val url = URL(releasesUrl)
+    private fun checkForUpdate(appContext: Context, apiUrl: String? = null): JsonNode? {
+        val url = URL(apiUrl ?: releasesUrl)
         val json: JsonNode = YoutubeDL.objectMapper.readTree(url)
         val newVersion = getTag(json)
         val oldVersion = SharedPrefsHelper[appContext, youtubeDLVersionKey]

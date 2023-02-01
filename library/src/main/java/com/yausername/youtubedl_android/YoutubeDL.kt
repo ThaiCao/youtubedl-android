@@ -212,10 +212,10 @@ object YoutubeDL {
 
     @Synchronized
     @Throws(YoutubeDLException::class)
-    fun updateYoutubeDL(appContext: Context): UpdateStatus? {
+    fun updateYoutubeDL(appContext: Context, apiUrl: String? = null): UpdateStatus? {
         assertInit()
         return try {
-            YoutubeDLUpdater.update(appContext)
+            YoutubeDLUpdater.update(appContext, apiUrl)
         } catch (e: IOException) {
             throw YoutubeDLException("failed to update youtube-dl", e)
         }

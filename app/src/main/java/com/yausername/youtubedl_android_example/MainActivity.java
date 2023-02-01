@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         updating = true;
         progressBar.setVisibility(View.VISIBLE);
-        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().updateYoutubeDL(getApplication()))
+        Disposable disposable = Observable.fromCallable(() -> YoutubeDL.getInstance().updateYoutubeDL(getApplication(), null))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(status -> {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     updating = false;
                 }, e -> {
-                    if(BuildConfig.DEBUG) Log.e(TAG, "failed to update", e);
+                    if (BuildConfig.DEBUG) Log.e(TAG, "failed to update", e);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, "update failed", Toast.LENGTH_LONG).show();
                     updating = false;
